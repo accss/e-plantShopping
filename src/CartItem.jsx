@@ -14,7 +14,8 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
-     return cart.reduce((total, item) => {
+    console.log('Cart items:', cart); 
+    return cart.reduce((total, item) => {
         const itemCost = parseCost(item.cost);
         const itemQuantity = parseInt(item.quantity);
   
@@ -60,6 +61,15 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    const itemCost = parseCost(item.cost);
+    const itemQuantity = parseInt(item.quantity);
+
+    if (isNaN(itemCost) || isNaN(itemQuantity)) {
+      console.error(`Invalid cost (${item.cost}) or quantity (${item.quantity}) for item ${item.name}`);
+      return '0.00';
+    }
+
+    return (itemCost * itemQuantity).toFixed(2);
   };
 
   return (
@@ -87,7 +97,7 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>Checkout</button>
       </div>
     </div>
   );
